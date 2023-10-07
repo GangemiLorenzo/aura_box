@@ -40,19 +40,19 @@ AuraBox(
     spots: [
         // Places one blue spot in the center
         AuraSpot(
-        color: Colors.blue,
-        radius: 100.0,
-        alignment: Alignment.center,
-        blurRadius: 5.0,
-        stops: const [0.0, 0.5],
+            color: Colors.blue,
+            radius: 100.0,
+            alignment: Alignment.center,
+            blurRadius: 5.0,
+            stops: const [0.0, 0.5],
         ),
         // Places one red spot in the bottom right
         AuraSpot(
-        color: Colors.red,
-        radius: 150.0,
-        alignment: Alignment.bottomRight,
-        blurRadius: 10.0,
-        stops: const [0.0, 0.7],
+            color: Colors.red,
+            radius: 150.0,
+            alignment: Alignment.bottomRight,
+            blurRadius: 10.0,
+            stops: const [0.0, 0.7],
         ),
     ],
     decoration: BoxDecoration(
