@@ -81,3 +81,9 @@ For further details you can refer to the [Alignment class documentation](https:/
 An example project is available within the project.
 Here's a video showcasing it:
 
+
+https://github.com/GangemiLorenzo/aura_box/assets/26723808/3290b7c3-b9e1-4bee-a283-7470da076ba9
+
+
+
+
