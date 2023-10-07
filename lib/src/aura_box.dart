@@ -16,7 +16,10 @@ class AuraBox extends StatelessWidget {
   ///
   /// ```dart
   /// AuraBox(
-  ///   child: Image.asset('assets/image.png'),
+  ///   child: SizedBox(
+  ///      height: 100,
+  ///      width: 100,
+  ///   ),
   ///   spots: [
   ///     AuraSpot(
   ///       color: Colors.blue,
