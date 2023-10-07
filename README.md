@@ -5,7 +5,8 @@
 
 Flutter widget that combines multiple radial gradients and blur effect.
 
-![Aura box banner image](readme_banner.png)
+![Aura box banner image](https://github.com/GangemiLorenzo/aura_box/assets/26723808/16a43670-17df-4515-8a57-29f17b94607b)
+
 
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
@@ -67,7 +68,7 @@ AuraBox(
 )
 ```
 
-![](readme_example.png)
+![](https://github.com/GangemiLorenzo/aura_box/assets/26723808/974cfc39-28be-4942-bbab-95d942a5917a)
 
 ### Alignment
 
@@ -78,11 +79,11 @@ For further details you can refer to the [Alignment class documentation](https:/
 
 ## Example
 
-An example project is available within the project.
-Here's a video showcasing it:
+An example project is available within the project:
+
+![example](https://github.com/GangemiLorenzo/aura_box/assets/26723808/c5852f3a-b85d-4c2d-8e97-57016712c5ea)
 
 
-https://github.com/GangemiLorenzo/aura_box/assets/26723808/3290b7c3-b9e1-4bee-a283-7470da076ba9
 
 
 
