@@ -75,3 +75,9 @@ The single spots are positioned inside a stack widget.
 This gives control over their position using the `alignment` property.
 
 For further details you can refer to the [Alignment class documentation](https://api.flutter.dev/flutter/painting/Alignment-class.html).
+
+## Example
+
+An example project is available within the project.
+Here's a video showcasing it:
+
