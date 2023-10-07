@@ -1,7 +1,7 @@
 name: aura_box
 description: Flutter Widget that combines multiple radial gradients and blur effect.
-version: 0.1.0+1
-publish_to: none
+version: 1.0.0
+homepage: https://github.com/GangemiLorenzo/aura_box
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
