@@ -33,7 +33,7 @@ import 'package:aura_box/aura_box.dart';
 
 The package exposes two widgets.
 - `AuraBox` acts as a container which can receive a `child`, a `decoration` and a list of `AuraSpot`.
-- `AuraSpot` rapresent the point where the radiant gradients are generated.
+- `AuraSpot` represent the point where the radiant gradients are generated.
 
 ```dart
 AuraBox(
