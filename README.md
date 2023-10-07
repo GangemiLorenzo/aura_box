@@ -7,8 +7,6 @@ Flutter widget that combines multiple radial gradients and blur effect.
 
 ![Aura box banner image](readme_banner.png)
 
-![Aura box banner image](readme_example_recording.mp4)
-
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
