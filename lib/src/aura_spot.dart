@@ -73,6 +73,7 @@ class AuraSpot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShaderMask(
+      key: key,
       shaderCallback: (Rect bounds) {
         final gradient = RadialGradient(
           center: alignment,
