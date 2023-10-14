@@ -23,6 +23,10 @@ jobs:
       includes: "**/*.md"
       modified_files_only: false
 
+  pana:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v1
+
+
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
 
