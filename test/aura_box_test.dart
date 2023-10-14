@@ -151,7 +151,6 @@ void main() {
         tester: tester,
         config: const PatrolTesterConfig(),
       );
-      // Create a test widget that uses the AuraBox widget
       await $.pumpWidget(
         MaterialApp(
           home: AuraBox(
@@ -175,7 +174,6 @@ void main() {
         ),
       );
 
-      // Verify that the child and AuraSpot widgets are composed in a Stack
       expect($(Stack), findsOneWidget);
       final stack = $(Stack).evaluate().single.widget as Stack;
       expect(stack.children.length, equals(3));
