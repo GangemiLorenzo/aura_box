@@ -11,3 +11,10 @@
 ## 1.0.1
 
 Updated the README and `pubspec.yaml` file
+
+## 1.0.2
+
+### Added
+- `patrol_finder` dependency
+- widget testing
+- CI improvements
