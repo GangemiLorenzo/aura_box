@@ -1,7 +1,9 @@
 # Aura Box
 
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
+[![patrol_finders on pub.dev][patrol_finders_badge]][patrol_finders_link]
 [![License: MIT][license_badge]][license_link]
+
 
 Flutter widget that combines multiple radial gradients and blur effect.
 
@@ -12,6 +14,8 @@ Flutter widget that combines multiple radial gradients and blur effect.
 [license_link]: https://opensource.org/licenses/MIT
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
+[patrol_finders_badge]: https://img.shields.io/badge/test-patrol_finders-yellow
+[patrol_finders_link]: https://pub.dev/packages/patrol_finders
 
 
 ## Installation
