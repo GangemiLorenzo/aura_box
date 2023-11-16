@@ -13,5 +13,5 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  patrol_finders: ^1.0.0
+  patrol_finders: ">=1.0.0 <3.0.0"
   very_good_analysis: ^5.1.0
