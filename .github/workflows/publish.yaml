@@ -3,10 +3,10 @@ name: Pub Publish Workflow
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 jobs:
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_pub_publish.yml@v1
     with:
-      pub_credentials: secrets.PUB_CREDENTIALS
+      pub_credentials: $PUB_CREDENTIALS
