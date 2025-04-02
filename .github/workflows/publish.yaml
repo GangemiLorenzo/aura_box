@@ -1,6 +1,7 @@
 name: Pub Publish Workflow
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*.*.*"
