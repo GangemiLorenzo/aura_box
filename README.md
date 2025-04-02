@@ -24,7 +24,7 @@ Add this line into the project `pubspec.yaml` file.
 
 ```yaml
 dependencies:
-    aura_box: ^1.0.3
+    aura_box: ^1.0.4
 ```
 
 Then in your files you can import it:
