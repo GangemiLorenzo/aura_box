@@ -9,5 +9,3 @@ on:
 jobs:
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_pub_publish.yml@v1
-    secrets:
-      pub_credentials: ${{ secrets.PUB_CREDENTIALS }}
