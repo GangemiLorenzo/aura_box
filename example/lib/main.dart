@@ -6,9 +6,7 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({
-    super.key,
-  });
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -23,9 +21,7 @@ class _MyAppState extends State<MyApp> {
       title: 'AuraBox example',
       themeMode: brigthness ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
@@ -54,9 +50,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({
-    super.key,
-  });
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +61,7 @@ class HomePage extends StatelessWidget {
           AuraBox(
             decoration: const BoxDecoration(
               color: Colors.transparent,
-              borderRadius: BorderRadius.all(
-                Radius.circular(16),
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
             spots: [
               AuraSpot(
@@ -111,15 +103,11 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 24,
-          ),
+          const SizedBox(height: 24),
           AuraBox(
             decoration: const BoxDecoration(
               color: Colors.transparent,
-              borderRadius: BorderRadius.all(
-                Radius.circular(16),
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
             spots: [
               AuraSpot(
@@ -155,15 +143,11 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 24,
-          ),
+          const SizedBox(height: 24),
           AuraBox(
             decoration: const BoxDecoration(
               color: Colors.transparent,
-              borderRadius: BorderRadius.all(
-                Radius.circular(16),
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
             spots: [
               AuraSpot(
@@ -193,15 +177,11 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 24,
-          ),
+          const SizedBox(height: 24),
           AuraBox(
             decoration: BoxDecoration(
               color: Colors.blueGrey.shade100,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(16),
-              ),
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
             ),
             spots: [
               AuraSpot(
@@ -231,15 +211,11 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 24,
-          ),
+          const SizedBox(height: 24),
           AuraBox(
             decoration: const BoxDecoration(
               color: Colors.transparent,
-              borderRadius: BorderRadius.all(
-                Radius.circular(16),
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
             spots: [
               AuraSpot(

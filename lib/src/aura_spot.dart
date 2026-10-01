@@ -47,10 +47,7 @@ class AuraSpot extends StatelessWidget {
     required this.alignment,
     super.key,
     this.blurRadius = 0,
-    this.stops = const [
-      0.0,
-      1.0,
-    ],
+    this.stops = const [0.0, 1.0],
   }) : assert(stops.length == 2, 'Stops length must be equal to 2');
 
   /// The gradient starting color.
@@ -74,14 +71,11 @@ class AuraSpot extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShaderMask(
       key: key,
-      shaderCallback: (Rect bounds) {
+      shaderCallback: (bounds) {
         final gradient = RadialGradient(
           center: alignment,
           radius: radius / min(bounds.height, bounds.width),
-          colors: const [
-            Colors.black,
-            Colors.transparent,
-          ],
+          colors: const [Colors.black, Colors.transparent],
           stops: stops,
         );
 
@@ -92,9 +86,7 @@ class AuraSpot extends StatelessWidget {
         );
       },
       blendMode: BlendMode.dstIn,
-      child: Container(
-        color: color,
-      ),
+      child: Container(color: color),
     );
   }
 
@@ -104,10 +96,7 @@ class AuraSpot extends StatelessWidget {
     required Rect bounds,
     required double blurRadius,
   }) {
-    final image = _createImageFromGradient(
-      gradient: gradient,
-      bounds: bounds,
-    );
+    final image = _createImageFromGradient(gradient: gradient, bounds: bounds);
 
     final pictureRecorder = ui.PictureRecorder();
     final canvas = Canvas(pictureRecorder, bounds);
@@ -126,9 +115,9 @@ class AuraSpot extends StatelessWidget {
 
     // End recording and convert the Picture into an Image.
     final blurredImage = pictureRecorder.endRecording().toImageSync(
-          bounds.size.width.toInt(),
-          bounds.size.height.toInt(),
-        );
+      bounds.size.width.toInt(),
+      bounds.size.height.toInt(),
+    );
 
     // Convert the blurred image to an ImageShader.
     return ImageShader(
@@ -148,8 +137,8 @@ class AuraSpot extends StatelessWidget {
     Canvas(recorder, bounds).drawRect(bounds, paint);
 
     return recorder.endRecording().toImageSync(
-          bounds.width.toInt(),
-          bounds.height.toInt(),
-        );
+      bounds.width.toInt(),
+      bounds.height.toInt(),
+    );
   }
 }

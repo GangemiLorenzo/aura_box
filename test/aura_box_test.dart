@@ -1,12 +1,11 @@
-import 'package:aura_box/aura_box.dart'; // Import your AuraBox class
+import 'package:aura_box/aura_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol_finders/patrol_finders.dart';
 
 void main() {
   group('AuraBox', () {
-    testWidgets('renders AuraSpot and ShaderMasks',
-        (WidgetTester tester) async {
+    testWidgets('renders AuraSpot and ShaderMasks', (tester) async {
       final $ = PatrolTester(
         tester: tester,
         config: const PatrolTesterConfig(),
@@ -39,8 +38,7 @@ void main() {
       expect($(AuraBox).$(AuraSpot).$(ShaderMask), findsNWidgets(2));
     });
 
-    testWidgets('applies decoration over the main container',
-        (WidgetTester tester) async {
+    testWidgets('applies decoration over the main container', (tester) async {
       final $ = PatrolTester(
         tester: tester,
         config: const PatrolTesterConfig(),
@@ -68,8 +66,9 @@ void main() {
       expect(decoration.borderRadius, equals(BorderRadius.circular(10)));
     });
 
-    testWidgets('given decoration with border radius, applies ClipRRect',
-        (WidgetTester tester) async {
+    testWidgets('given decoration with border radius, applies ClipRRect', (
+      tester,
+    ) async {
       final $ = PatrolTester(
         tester: tester,
         config: const PatrolTesterConfig(),
@@ -108,8 +107,9 @@ void main() {
       expect(clipRRect.borderRadius, equals(BorderRadius.circular(10)));
     });
 
-    testWidgets('given decoration with BoxShape.circle, applies ClipOval',
-        (WidgetTester tester) async {
+    testWidgets('given decoration with BoxShape.circle, applies ClipOval', (
+      tester,
+    ) async {
       final $ = PatrolTester(
         tester: tester,
         config: const PatrolTesterConfig(),
@@ -145,8 +145,7 @@ void main() {
       expect($(AuraBox).$(ClipOval), findsNWidgets(2));
     });
 
-    testWidgets('composes child and spots in a Stack',
-        (WidgetTester tester) async {
+    testWidgets('composes child and spots in a Stack', (tester) async {
       final $ = PatrolTester(
         tester: tester,
         config: const PatrolTesterConfig(),

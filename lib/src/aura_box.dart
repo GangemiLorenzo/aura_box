@@ -97,10 +97,7 @@ class AuraBox extends StatelessWidget {
       return ClipOval(child: child);
     }
     if (decoration?.borderRadius != null) {
-      return ClipRRect(
-        borderRadius: decoration!.borderRadius!,
-        child: child,
-      );
+      return ClipRRect(borderRadius: decoration!.borderRadius!, child: child);
     }
 
     return child;
