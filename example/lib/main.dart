@@ -1,48 +1,45 @@
 import 'package:aura_box/aura_box.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'presets.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Optional: load the shader before the first frame.
+  await AuraBox.precache();
+  runApp(const ExampleApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({
-    super.key,
-  });
+const _radius = BorderRadius.all(Radius.circular(24));
+
+class ExampleApp extends StatefulWidget {
+  const ExampleApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<ExampleApp> createState() => _ExampleAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  bool brigthness = false;
+class _ExampleAppState extends State<ExampleApp> {
+  bool _dark = false;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'AuraBox example',
-      themeMode: brigthness ? ThemeMode.dark : ThemeMode.light,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-        ),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.dark,
-          seedColor: Colors.deepPurple,
-        ),
-        useMaterial3: true,
-      ),
       debugShowCheckedModeBanner: false,
+      themeMode: _dark ? ThemeMode.dark : ThemeMode.light,
+      theme: ThemeData(colorSchemeSeed: Colors.deepPurple),
+      darkTheme: ThemeData(
+        colorSchemeSeed: Colors.deepPurple,
+        brightness: Brightness.dark,
+      ),
       home: Scaffold(
         appBar: AppBar(
-          elevation: 1,
-          title: const Text('Aura box'),
+          title: const Text('Aura Box'),
           actions: [
             IconButton(
-              onPressed: () => setState(() => brigthness = !brigthness),
+              tooltip: 'Toggle brightness',
+              onPressed: () => setState(() => _dark = !_dark),
               icon: const Icon(Icons.brightness_4),
             ),
           ],
@@ -54,241 +51,279 @@ class _MyAppState extends State<MyApp> {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({
-    super.key,
-  });
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24.0),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 760),
+        child: ListView(
+          padding: const EdgeInsets.all(24),
+          children: const [
+            HeroSection(),
+            Section('Presets', 'A box and a list of spots.', PresetsSection()),
+            Section(
+              'Implicit animation',
+              'AnimatedAuraBox animates between two lists of spots. Tap it.',
+              AnimatedSection(),
+            ),
+            Section(
+              'Decoration',
+              'AuraDecoration works in any Container. Tap it.',
+              DecorationSection(),
+            ),
+            Section(
+              'Playground',
+              'Blur, grain and drift, live.',
+              PlaygroundSection(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Section extends StatelessWidget {
+  const Section(this.title, this.subtitle, this.child, {super.key});
+
+  final String title;
+  final String subtitle;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context).textTheme;
+    return Padding(
+      padding: const EdgeInsets.only(top: 40),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AuraBox(
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.all(
-                Radius.circular(16),
-              ),
-            ),
-            spots: [
-              AuraSpot(
-                color: Colors.purple.shade300,
-                radius: 500,
-                alignment: const Alignment(0, 0.9),
-                blurRadius: 50,
-              ),
-              AuraSpot(
-                color: Colors.deepPurple.shade100,
-                radius: 400,
-                alignment: const Alignment(-1.2, 1.2),
-                blurRadius: 50,
-              ),
-              AuraSpot(
-                color: Colors.indigo.shade700,
-                radius: 400,
-                alignment: const Alignment(-0.5, -1.2),
-                blurRadius: 50,
-              ),
-              AuraSpot(
-                color: Colors.purpleAccent.shade700,
-                radius: 300,
-                alignment: const Alignment(1.2, -1.2),
-                blurRadius: 100,
-              ),
-            ],
-            child: SizedBox(
-              height: 400,
-              child: Center(
-                child: Text(
-                  'Aura Box',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 48,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          AuraBox(
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.all(
-                Radius.circular(16),
-              ),
-            ),
-            spots: [
-              AuraSpot(
-                color: Colors.green.shade400,
-                radius: 600,
-                alignment: const Alignment(-1, 0),
-                blurRadius: 400,
-              ),
-              AuraSpot(
-                color: Colors.green.shade100,
-                radius: 200,
-                alignment: const Alignment(0.5, -0.7),
-                blurRadius: 100,
-              ),
-              AuraSpot(
-                color: Colors.blue,
-                radius: 300,
-                alignment: const Alignment(0.5, 0.8),
-                blurRadius: 300,
-              ),
-            ],
-            child: SizedBox(
-              height: 400,
-              child: Center(
-                child: Text(
-                  'Aura Box',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 48,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          AuraBox(
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.all(
-                Radius.circular(16),
-              ),
-            ),
-            spots: [
-              AuraSpot(
-                color: Colors.red,
-                radius: 300,
-                alignment: Alignment.center,
-                blurRadius: 200,
-              ),
-              AuraSpot(
-                color: Colors.amber,
-                radius: 300,
-                alignment: const Alignment(0, 1.4),
-                blurRadius: 30,
-              ),
-            ],
-            child: SizedBox(
-              height: 400,
-              child: Center(
-                child: Text(
-                  'Aura Box',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 48,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          AuraBox(
-            decoration: BoxDecoration(
-              color: Colors.blueGrey.shade100,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(16),
-              ),
-            ),
-            spots: [
-              AuraSpot(
-                color: Colors.amber,
-                radius: 200,
-                alignment: const Alignment(0.1, 0.1),
-                blurRadius: 30,
-              ),
-              AuraSpot(
-                color: Colors.red.shade400,
-                radius: 180,
-                alignment: const Alignment(-0.1, -0.1),
-                blurRadius: 20,
-              ),
-            ],
-            child: SizedBox(
-              height: 400,
-              child: Center(
-                child: Text(
-                  'Aura Box',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 48,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          AuraBox(
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.all(
-                Radius.circular(16),
-              ),
-            ),
-            spots: [
-              AuraSpot(
-                color: Colors.pink.shade600,
-                radius: 500,
-                alignment: const Alignment(-0.9, -0.9),
-                blurRadius: 60,
-              ),
-              AuraSpot(
-                color: Colors.deepOrange.shade200,
-                radius: 200,
-                alignment: const Alignment(0, -0.9),
-                blurRadius: 50,
-              ),
-              AuraSpot(
-                color: Colors.orange.shade300,
-                radius: 300,
-                alignment: const Alignment(0, 0.9),
-                blurRadius: 60,
-              ),
-              AuraSpot(
-                color: Colors.deepOrange.shade100,
-                radius: 400,
-                alignment: const Alignment(-0.9, 0.9),
-                blurRadius: 30,
-              ),
-              AuraSpot(
-                color: Colors.pink.shade900,
-                radius: 400,
-                alignment: const Alignment(1, -0.3),
-                blurRadius: 150,
-              ),
-            ],
-            child: SizedBox(
-              height: 400,
-              child: Center(
-                child: Text(
-                  'Aura Box',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 48,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          Text(title, style: theme.headlineSmall),
+          const SizedBox(height: 4),
+          Text(subtitle, style: theme.bodyMedium),
+          const SizedBox(height: 16),
+          child,
         ],
       ),
+    );
+  }
+}
+
+class Label extends StatelessWidget {
+  const Label(this.text, {this.size = 24, super.key});
+
+  final String text;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        text,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: size,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
+/// Drifting spots with a bit of grain.
+class HeroSection extends StatelessWidget {
+  const HeroSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AuraBox(
+      spots: presets.first.spots,
+      decoration: const BoxDecoration(borderRadius: _radius),
+      grain: 0.08,
+      drift: const AuraDrift(amplitude: 0.35),
+      child: const SizedBox(height: 320, child: Label('Aura Box', size: 48)),
+    );
+  }
+}
+
+class PresetsSection extends StatelessWidget {
+  const PresetsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.extent(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      maxCrossAxisExtent: 260,
+      mainAxisSpacing: 16,
+      crossAxisSpacing: 16,
+      childAspectRatio: 0.85,
+      children: [
+        for (final preset in presets)
+          AuraBox(
+            spots: preset.spots,
+            decoration: BoxDecoration(
+              color: preset.background,
+              borderRadius: _radius,
+            ),
+            child: Label(preset.name),
+          ),
+      ],
+    );
+  }
+}
+
+class AnimatedSection extends StatefulWidget {
+  const AnimatedSection({super.key});
+
+  @override
+  State<AnimatedSection> createState() => _AnimatedSectionState();
+}
+
+class _AnimatedSectionState extends State<AnimatedSection> {
+  int _index = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final preset = presets[_index];
+    return GestureDetector(
+      onTap: () => setState(() => _index = (_index + 1) % presets.length),
+      child: AnimatedAuraBox(
+        duration: const Duration(milliseconds: 900),
+        curve: Curves.easeInOutCubic,
+        spots: preset.spots,
+        decoration: const BoxDecoration(borderRadius: _radius),
+        child: SizedBox(height: 240, child: Label(preset.name, size: 32)),
+      ),
+    );
+  }
+}
+
+class DecorationSection extends StatefulWidget {
+  const DecorationSection({super.key});
+
+  @override
+  State<DecorationSection> createState() => _DecorationSectionState();
+}
+
+class _DecorationSectionState extends State<DecorationSection> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => setState(() => _expanded = !_expanded),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 700),
+          curve: Curves.easeInOutCubic,
+          width: _expanded ? 420 : 200,
+          height: 200,
+          decoration: AuraDecoration(
+            spots: presets[_expanded ? 2 : 4].spots,
+            borderRadius: BorderRadius.circular(_expanded ? 24 : 100),
+          ),
+          child: Label(_expanded ? 'Sunset' : 'Rose'),
+        ),
+      ),
+    );
+  }
+}
+
+class PlaygroundSection extends StatefulWidget {
+  const PlaygroundSection({super.key});
+
+  @override
+  State<PlaygroundSection> createState() => _PlaygroundSectionState();
+}
+
+class _PlaygroundSectionState extends State<PlaygroundSection> {
+  double _blur = 40;
+  double _grain = 0.1;
+  bool _drift = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AuraBox(
+          spots: [
+            AuraSpot(
+              color: Colors.cyan.shade400,
+              radius: 260,
+              alignment: const Alignment(-0.6, -0.4),
+              blurRadius: _blur,
+            ),
+            AuraSpot(
+              color: Colors.pinkAccent,
+              radius: 240,
+              alignment: const Alignment(0.6, 0.5),
+              blurRadius: _blur,
+            ),
+            AuraSpot(
+              color: Colors.amber,
+              radius: 160,
+              alignment: const Alignment(0.2, -0.8),
+              blurRadius: _blur,
+              stops: const [0.2, 1],
+            ),
+          ],
+          decoration: const BoxDecoration(
+            color: Color(0xFF14121F),
+            borderRadius: _radius,
+          ),
+          grain: _grain,
+          drift: _drift ? const AuraDrift() : null,
+          child: const SizedBox(height: 280, width: double.infinity),
+        ),
+        const SizedBox(height: 8),
+        _Control(
+          label: 'Blur ${_blur.round()}',
+          child: Slider(
+            max: 150,
+            value: _blur,
+            onChanged: (value) => setState(() => _blur = value),
+          ),
+        ),
+        _Control(
+          label: 'Grain ${_grain.toStringAsFixed(2)}',
+          child: Slider(
+            max: 0.5,
+            value: _grain,
+            onChanged: (value) => setState(() => _grain = value),
+          ),
+        ),
+        _Control(
+          label: 'Drift',
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Switch(
+              value: _drift,
+              onChanged: (value) => setState(() => _drift = value),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Control extends StatelessWidget {
+  const _Control({required this.label, required this.child});
+
+  final String label;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(width: 96, child: Text(label)),
+        Expanded(child: child),
+      ],
     );
   }
 }

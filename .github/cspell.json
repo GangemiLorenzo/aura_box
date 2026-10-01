@@ -1,7 +1,10 @@
 {
   "version": "0.2",
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
-  "dictionaries": ["vgv_allowed", "vgv_forbidden"],
+  "dictionaries": [
+    "vgv_allowed",
+    "vgv_forbidden"
+  ],
   "dictionaryDefinitions": [
     {
       "name": "vgv_allowed",
@@ -16,6 +19,14 @@
   ],
   "useGitignore": true,
   "words": [
-    "aura_box"
+    "animatable",
+    "aura_box",
+    "Gangemi",
+    "Impeller",
+    "lerp",
+    "Skia"
+  ],
+  "ignorePaths": [
+    "journal/**"
   ]
 }

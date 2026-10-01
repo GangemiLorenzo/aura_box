@@ -1,155 +1,173 @@
-import 'dart:math';
-import 'dart:ui' as ui;
+import 'dart:ui' show lerpDouble;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/painting.dart';
 
-/// A widget that creates a spot with a radial gradient and a blur effect.
-class AuraSpot extends StatelessWidget {
-  /// The [AuraSpot] widget creates a spot with a radial gradient that
-  /// can be used to add various visual effects. It allows you to control
-  /// the spot's color,
-  /// radius, distribution of colors in the gradient, blur intensity,
-  /// and position.
+/// A single spot of an aura: a radial falloff of one [color], optionally
+/// blurred.
+///
+/// A spot is plain immutable data. It is painted by an `AuraBox` or an
+/// `AuraDecoration`, and it can be interpolated with [lerp].
+///
+/// ```dart
+/// const AuraSpot(
+///   color: Color(0xFF2196F3),
+///   radius: 100,
+///   alignment: Alignment.center,
+///   blurRadius: 5,
+///   stops: [0.0, 0.5],
+/// )
+/// ```
+@immutable
+class AuraSpot with Diagnosticable {
+  /// Creates a spot.
   ///
-  /// To use this widget, provide the required parameters: [color], [radius],
-  /// [alignment], and optionally customize the [blurRadius] and [stops] list.
-  ///
-  /// Example usage:
-  ///
-  /// ```dart
-  /// AuraSpot(
-  ///   color: Colors.blue,
-  ///   radius: 100.0,
-  ///   alignment: Alignment.center,
-  ///   blurRadius: 5.0,
-  ///   stops: [0.0, 0.5],
-  /// )
-  /// ```
-  ///
-  /// The [color] parameter defines the gradient's starting color.
-  ///
-  /// The [radius] parameter specifies the radius of the radial gradient.
-  ///
-  /// The [alignment] parameter determines the spot's position using
-  /// the [Alignment] class.
-  ///
-  /// The [blurRadius] parameter controls the intensity of the blur effect
-  /// applied to the spot.
-  ///
-  /// The [stops] parameter defines the gradient distribution, and it must
-  /// have a length equal to 2.
-  ///
-  /// The [AuraSpot] widget is typically used as a child of a [Stack] or other
-  /// layout widgets to position and display the spot as needed.
+  /// The [radius] and the [blurRadius] must not be negative. The [stops] must
+  /// contain exactly two values in ascending order, both between 0 and 1.
   const AuraSpot({
     required this.color,
     required this.radius,
-    required this.alignment,
-    super.key,
+    this.alignment = Alignment.center,
     this.blurRadius = 0,
-    this.stops = const [
-      0.0,
-      1.0,
-    ],
-  }) : assert(stops.length == 2, 'Stops length must be equal to 2');
+    this.stops = const [0.0, 1.0],
+  }) : assert(radius >= 0, 'The radius must not be negative'),
+       assert(blurRadius >= 0, 'The blur radius must not be negative');
 
-  /// The gradient starting color.
+  /// The color at the center of the spot. It fades to transparent at the
+  /// edge.
   final Color color;
 
-  /// Radius of the radial gradient.
+  /// The radius of the spot, in logical pixels.
   final double radius;
 
-  /// Defines the gradient distribution.
-  /// If not specified it assumes a uniform distribution.
-  /// Must have length equal to 2.
-  final List<double> stops;
+  /// The position of the center of the spot inside the box.
+  ///
+  /// Values outside the `-1.0..1.0` range place the center outside the box.
+  final AlignmentGeometry alignment;
 
-  /// Control the blur effect intensity.
+  /// The intensity of the blur, as the standard deviation of a Gaussian in
+  /// logical pixels.
   final double blurRadius;
 
-  /// Determine the spot position.
-  final Alignment alignment;
+  /// Where the fade starts and ends, as fractions of the [radius].
+  ///
+  /// The spot is fully opaque up to `stops[0]` and fully transparent from
+  /// `stops[1]`. Must contain exactly two values.
+  final List<double> stops;
+
+  /// The distance from the center where the fade starts, in logical pixels.
+  double get innerRadius => radius * stops[0];
+
+  /// The distance from the center where the fade ends, in logical pixels.
+  double get outerRadius => radius * stops[1];
+
+  /// Asserts that the [stops] are valid.
+  ///
+  /// The check cannot run in the constructor because it would prevent
+  /// `const` spots.
+  bool debugAssertIsValid() {
+    assert(stops.length == 2, 'Stops length must be equal to 2');
+    assert(
+      stops[0] >= 0 && stops[0] <= stops[1] && stops[1] <= 1,
+      'Stops must be in ascending order, between 0 and 1',
+    );
+    return true;
+  }
+
+  /// Returns a copy of this spot with the given fields replaced.
+  AuraSpot copyWith({
+    Color? color,
+    double? radius,
+    AlignmentGeometry? alignment,
+    double? blurRadius,
+    List<double>? stops,
+  }) {
+    return AuraSpot(
+      color: color ?? this.color,
+      radius: radius ?? this.radius,
+      alignment: alignment ?? this.alignment,
+      blurRadius: blurRadius ?? this.blurRadius,
+      stops: stops ?? this.stops,
+    );
+  }
+
+  /// Returns a copy of this spot with its opacity multiplied by [factor].
+  AuraSpot scale(double factor) {
+    return copyWith(color: color.withValues(alpha: color.a * factor));
+  }
+
+  /// Linearly interpolates between two spots.
+  ///
+  /// A `null` spot is treated as a fully transparent copy of the other one,
+  /// so a spot can fade in or out.
+  static AuraSpot? lerp(AuraSpot? a, AuraSpot? b, double t) {
+    if (identical(a, b)) {
+      return a;
+    }
+    if (a == null) {
+      return b!.scale(t);
+    }
+    if (b == null) {
+      return a.scale(1 - t);
+    }
+    return AuraSpot(
+      color: Color.lerp(a.color, b.color, t)!,
+      radius: lerpDouble(a.radius, b.radius, t)!,
+      alignment: AlignmentGeometry.lerp(a.alignment, b.alignment, t)!,
+      blurRadius: lerpDouble(a.blurRadius, b.blurRadius, t)!,
+      stops: [
+        lerpDouble(a.stops[0], b.stops[0], t)!,
+        lerpDouble(a.stops[1], b.stops[1], t)!,
+      ],
+    );
+  }
+
+  /// Linearly interpolates between two lists of spots.
+  ///
+  /// Spots are matched by index. When the lists have different lengths, the
+  /// extra spots fade in or out.
+  static List<AuraSpot> lerpList(
+    List<AuraSpot>? a,
+    List<AuraSpot>? b,
+    double t,
+  ) {
+    final from = a ?? const <AuraSpot>[];
+    final to = b ?? const <AuraSpot>[];
+    return [
+      for (var i = 0; i < from.length || i < to.length; i++)
+        lerp(
+          i < from.length ? from[i] : null,
+          i < to.length ? to[i] : null,
+          t,
+        )!,
+    ];
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return ShaderMask(
-      key: key,
-      shaderCallback: (Rect bounds) {
-        final gradient = RadialGradient(
-          center: alignment,
-          radius: radius / min(bounds.height, bounds.width),
-          colors: const [
-            Colors.black,
-            Colors.transparent,
-          ],
-          stops: stops,
-        );
-
-        return _createBlurredImageShaderFromGradient(
-          gradient: gradient,
-          bounds: bounds,
-          blurRadius: blurRadius,
-        );
-      },
-      blendMode: BlendMode.dstIn,
-      child: Container(
-        color: color,
-      ),
-    );
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is AuraSpot &&
+        other.color == color &&
+        other.radius == radius &&
+        other.alignment == alignment &&
+        other.blurRadius == blurRadius &&
+        listEquals(other.stops, stops);
   }
 
-  /// Creates a blurred `ImageShader` from the given `RadialGradient`.
-  ImageShader _createBlurredImageShaderFromGradient({
-    required RadialGradient gradient,
-    required Rect bounds,
-    required double blurRadius,
-  }) {
-    final image = _createImageFromGradient(
-      gradient: gradient,
-      bounds: bounds,
-    );
+  @override
+  int get hashCode =>
+      Object.hash(color, radius, alignment, blurRadius, Object.hashAll(stops));
 
-    final pictureRecorder = ui.PictureRecorder();
-    final canvas = Canvas(pictureRecorder, bounds);
-    final paint = Paint();
-
-    // Use the blurred image as a paint shader
-    canvas.drawImage(
-      image,
-      Offset.zero,
-      paint
-        ..imageFilter = ui.ImageFilter.blur(
-          sigmaX: blurRadius,
-          sigmaY: blurRadius,
-        ),
-    );
-
-    // End recording and convert the Picture into an Image.
-    final blurredImage = pictureRecorder.endRecording().toImageSync(
-          bounds.size.width.toInt(),
-          bounds.size.height.toInt(),
-        );
-
-    // Convert the blurred image to an ImageShader.
-    return ImageShader(
-      blurredImage,
-      TileMode.clamp,
-      TileMode.clamp,
-      Matrix4.identity().storage,
-    );
-  }
-
-  ui.Image _createImageFromGradient({
-    required RadialGradient gradient,
-    required Rect bounds,
-  }) {
-    final recorder = ui.PictureRecorder();
-    final paint = Paint()..shader = gradient.createShader(bounds);
-    Canvas(recorder, bounds).drawRect(bounds, paint);
-
-    return recorder.endRecording().toImageSync(
-          bounds.width.toInt(),
-          bounds.height.toInt(),
-        );
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(ColorProperty('color', color))
+      ..add(DoubleProperty('radius', radius))
+      ..add(DiagnosticsProperty<AlignmentGeometry>('alignment', alignment))
+      ..add(DoubleProperty('blurRadius', blurRadius, defaultValue: 0.0))
+      ..add(IterableProperty<double>('stops', stops));
   }
 }
