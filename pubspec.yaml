@@ -2,7 +2,7 @@ name: aura_box
 description: >-
   Flutter widget for aura-style backgrounds: compose multiple blurred radial
   gradient spots inside a box to create soft, glowing, mesh-like gradients.
-version: 1.1.0
+version: 2.0.0
 homepage: https://lorenzogangemi.com
 repository: https://github.com/GangemiLorenzo/aura_box
 issue_tracker: https://github.com/GangemiLorenzo/aura_box/issues
@@ -19,8 +19,8 @@ screenshots:
     path: doc/aura_box_preview.png
 
 environment:
-  sdk: ^3.8.0
-  flutter: ">=3.32.0"
+  sdk: ^3.12.0
+  flutter: ">=3.44.0"
 
 dependencies:
   flutter:
@@ -31,3 +31,7 @@ dev_dependencies:
     sdk: flutter
   patrol_finders: ^3.6.0
   very_good_analysis: ^11.0.0
+
+flutter:
+  shaders:
+    - shaders/aura.frag
